@@ -3,6 +3,11 @@ require_relative '../config/environment'
 
 
 puts "HELLO WORLD"
+puts "Please enter your name:"
+theinput = gets.chomp
+puts "-------------------------"
+newest_user = User.create_or_find_by(name: theinput)
+puts "Awesome! #{newest_user.name}, it's time to begin your Tama-Journey!!!!! XDXD"
 
 
 # NEED DATA IN THE TABLES
