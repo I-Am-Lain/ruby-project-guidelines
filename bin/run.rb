@@ -5,6 +5,8 @@ require_relative '../config/environment'
 puts "HELLO WORLD"
 
 
+# NEED DATA IN THE TABLES
+# NEED TO SHOW DATA/DO SOMETHING 
 
 # will = User
 

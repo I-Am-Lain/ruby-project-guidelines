@@ -19,7 +19,7 @@ ActiveRecord::Schema.define(version: 2020_09_30_162333) do
 
   create_table "tamas", force: :cascade do |t|
     t.string "name"
-    t.datetime "birthdate"
+    t.datetime "created_at"
     t.string "family"
   end
 
