@@ -1,5 +1,6 @@
 require 'bundler'
 require 'rainbow'
+require "tty-prompt"
 
 Bundler.require
 

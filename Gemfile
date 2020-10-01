@@ -8,3 +8,6 @@ gem "require_all"
 
 gem 'artii'
 gem 'rainbow'
+gem "tty-box"
+gem 'tty-font'
+gem "tty-prompt"

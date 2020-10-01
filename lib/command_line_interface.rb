@@ -1,50 +1,70 @@
+# TO DO
+# - Create functionality
+# - Quotes API
+# - Refactor/Clean up
+# - Add UI/Art
+# - README
+# - 2 min vid
+
 def run
     greet
     intro
     test
 end
 
-def greet
-    thetime = Time.now.utc
-    puts thetime
 
-    Tama.all.each do |t|
+
+
+def greet
+    thetime = Time.now.utc ## Our constant reference to the current time
+
+    Tama.all.each do |t|  ## can add IF statment, IF tama.each |t| t.background_timer == nil
         t.background_timer = thetime
         t.save
-    end  ## <----- updates every tamagotchi's "background_timer"
-                    ## constraints:
-                    ##               - only runs when app is on
-                ##                   - (next time it's turned on, might evalute the time between?)
+    end
+    
+
     cute = '❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤'
-    puts Rainbow(cute).red.bright
-    puts Rainbow(cute).red.bright
-    puts Rainbow(cute).red.bright
-    hello = Artii::Base.new
-    puts Rainbow(hello.asciify('CRUDAGOTCHI!')).red.bright.inverse
-    puts Rainbow(cute).red.bright
-    puts Rainbow(cute).red.bright
-    puts Rainbow(cute).red.bright
-    puts Rainbow('Please enter a name, handsome stranger:').yellow
+    titlebox
+    puts ""
+    puts ""
+    puts Rainbow('Please enter a name, handsome stranger:').yellow.bright.inverse
     theinput = gets.chomp
     newest_user = User.find_or_create_by(name: theinput)
-    puts "-------------------------"
-    puts "-------------------------"
-    puts "-------------------------"
-    puts "-------------------------"
-    puts "-------------------------"
-    puts "-------------------------"
-    newest_user = User.find_or_create_by(name: theinput)
-    puts Rainbow("Awesome! #{newest_user.name}, it's time to begin your Tama-Journey!!!!! XDXD").magenta
-    puts "-------------------------"
-    puts "-------------------------"
-    puts "-------------------------"
-    puts "-------------------------"
-    puts "-------------------------"
+    puts ""
+    puts "."
+    puts ".."
+    puts "..."
+    puts ""
+    puts Rainbow("Awesome! #{newest_user.name}, it's time to begin your Tama-Journey!!!!! XDXD").yellow.bright.inverse
 end
+
+
+
+
+def titlebox
+    font = TTY::Font.new(:block)
+    pastel = Pastel.new
+
+    box = TTY::Box.frame(("               TAMALAND               "),  # just set the specific space
+    padding: 3, 
+    align: :center, 
+    border: :thick, 
+    style: {fg: :bright_yellow, 
+            bg: :blue,
+            border: {fg: :bright_yellow, bg: :blue}},
+            title: {top_center: "WELCOME TO", bottom_left: "Adopt", bottom_center: "Feed", bottom_right: "Play"})
+    print box
+    box2 = TTY::Box.warn("Tama Deployed!!") # info, warn, success, error
+    print box2
+end
+
+
+
 
 def intro
     puts ""
-    puts Rainbow("TamaPals is your CLI interface for ensuring the wellbeing of Tama near and yonder!").aqua
+    puts Rainbow("TamaPals is your CLI interface for ensuring the wellbeing of Tama near and yonder!").yellow.bright.inverse
     puts ""
     puts Rainbow("><><><><><><><><><><><><><>").green
     puts Rainbow("Select an option: (1 - 5)").green
@@ -59,6 +79,7 @@ def intro
     puts ""
     puts ""
 end
+
 
 
 
