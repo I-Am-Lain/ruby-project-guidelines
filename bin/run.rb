@@ -1,17 +1,26 @@
 require_relative '../config/environment'
 
+
+
+run
+
+
+
+
 def update_tama_timer
     thetime = Time.now.utc
     count = (thetime - Tama.find(1).background_timer)/60
 
     Tama.all.each do |t|
-        t.background_timer = thetime - (count/1440.0)
+        t.background_timer += 60*count.to_i
+        #t.background_timer = thetime - (count/1440.0)
         t.save
     end
 end
 
 
 ## losing truncation
+
 def hunger_check
     thetime = Time.now.utc
 
@@ -24,7 +33,7 @@ def hunger_check
             update_tama_timer
             #t.save
 
-            puts "#{t.name} last #{count} fullness!"  ###just visibly shows one of the tama's fullness
+            puts "#{t.name} lost #{count} fullness!"  ###just visibly shows one of the tama's fullness
             puts "vvvvvvvvvvvvvvvvvvvvvvvvvvvvv"
             puts t.fullness         ###just visibly shows one of the tama's fullness
         end
@@ -43,7 +52,10 @@ end
 thetime = Time.now.utc
 puts thetime
 
-update_tama_timer  ## <----- updates every tamagotchi's "background_timer"
+Tama.all.each do |t|
+    t.background_timer = thetime
+    t.save
+end  ## <----- updates every tamagotchi's "background_timer"
                   ## constraints:
                 ##               - only runs when app is on
             ##                   - (next time it's turned on, might evalute the time between?)
@@ -66,7 +78,7 @@ puts "-------------------------"
 puts "-------------------------"
 newest_user = User.find_or_create_by(name: theinput)
 puts "Awesome! #{newest_user.name}, it's time to begin your Tama-Journey!!!!! XDXD"
-puts "-------------------------" # CAN IMPLEMENT A "WELCOME BACK USER"
+puts "-------------------------" # IMPLEMENT A "WELCOME BACK USER"
 puts "-------------------------"
 puts "-------------------------"
 puts "-------------------------"
@@ -147,3 +159,7 @@ puts "THE END OF FILE"
 puts "THE END OF FILE"
 puts "THE END OF FILE"
 puts "THE END OF FILE"
+Tama.all.each do |t|
+    puts "#{t.name}, current timer #{t.background_timer}."
+    puts "FULLNESS = #{t.fullness}/10, HAPPINESS =  #{t.happiness}."
+end
