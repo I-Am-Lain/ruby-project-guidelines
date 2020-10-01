@@ -20,6 +20,7 @@ ActiveRecord::Schema.define(version: 2020_09_30_162333) do
   create_table "tamas", force: :cascade do |t|
     t.string "name"
     t.datetime "birthday"
+    t.datetime "background_timer"
     t.string "family"
     t.integer "fullness", default: 2
     t.integer "happiness", default: 5

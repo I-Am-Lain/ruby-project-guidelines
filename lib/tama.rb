@@ -9,6 +9,7 @@ class Tama < ActiveRecord::Base
     def initialize(hash)
         super
         self.family = FAM.sample
+        self.birthday = Time.now.utc
     end
 
     def feed
@@ -21,5 +22,4 @@ class Tama < ActiveRecord::Base
         puts "HE LOVES IT, FULLNESS is now #{self.fullness}."
     end
 
-    
 end
