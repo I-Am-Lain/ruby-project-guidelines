@@ -1,9 +1,6 @@
 # TO DO
 # - Create functionality
-#   - happy check
 #   - refactor the check entirely
-#   - is_dead function
-#   - NEW TAMA IS BORN FUNCTION
 #   - FORMS????
 # - Quotes API
 # - Refactor/Clean up
@@ -15,6 +12,8 @@
 # update for individual tamas?
 # persist across plays?
 # forms or no?
+
+require 'pry'
 
 def run
     #prompt = TTY::Prompt.new
@@ -58,7 +57,7 @@ def greet
     x = prompt.ask("What is your name?", default: ENV["USER"])
     #puts Rainbow(prompt.ask("What is your name?", default: ENV["USER"])).yellow.bright.inverse
     #theinput = gets.chomp
-    newest_user = User.find_or_create_by(name: x)
+    $CURRENTUSER = User.find_or_create_by(name: x)
 
     puts ""
     puts "."
@@ -66,10 +65,10 @@ def greet
     puts "..."
     puts ""
 
-    if newest_user.tamas == []
-        puts Rainbow("Welcome! #{newest_user.name}, it's time to begin your Tama-Journey!!!!!").yellow.bright.inverse
+    if $CURRENTUSER.tamas == []
+        puts Rainbow("Welcome! #{$CURRENTUSER.name}, it's time to begin your Tama-Journey!!!!!").yellow.bright.inverse
     else
-        puts Rainbow("Welcome back #{newest_user.name}, let's get back to keeping your children alive!").yellow.bright.inverse
+        puts Rainbow("Welcome back #{$CURRENTUSER.name}, let's get back to keeping your children alive!").yellow.bright.inverse
     end
     puts ""
     puts ""
@@ -96,8 +95,6 @@ def titlebox
             border: {fg: :bright_yellow, bg: :blue}},
             title: {top_center: "WELCOME TO", bottom_left: "Adopt", bottom_center: "Feed", bottom_right: "Play"})
     print box
-    box2 = TTY::Box.warn("Tama Deployed!!") # info, warn, success, error
-    print box2
 end
 
 
@@ -109,48 +106,93 @@ def intro
     choices = ["View My Tamas", "Feed", "Play", "Adopt-a-tama", "Create New Egg", "Quit"]
     x = prompt.select("Select a choice", choices)
     
-    #update tama table
+    #update tama table!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+    the_check
+
 
     case x
         when "View My Tamas"
-            ## do_view_function
+            view_tamas
         when "Feed"
-            ## feed all my tamas
+            feed
+            ## they really enjoyed it, now here's a quote by Franz Kafka
         when "Play"
-            ## increase all my tamas happiness
-        when "adopt"
+            play
+        when "Adopt-a-tama"
             ## create a new many-to-many with an alive Tama
-        when "create_egg"
-            ## create a one to many new tama
+        when "Create New Egg"
+            create_egg
+        when "Quit"
+            "Goodbye!!!"
+        else
+            "How did you even get here?"
     end
 
 
-
-
-    # puts ""
     # puts Rainbow("CRUDagotchi is the CLI interface").yellow.bright.inverse
     # puts Rainbow("for all fake retro digital pet enthusiasts, worldwide.™").yellow.bright.inverse
-    # puts ""
-    # puts Rainbow("><><><><><><><><><><><><><>").green
-    # puts Rainbow("Select an option: (1 - 5)").green
-    # puts Rainbow("><><><><><><><><><><><><><>").green
-    # puts ""
-    # puts Rainbow((" 1. ") + "View My Tamas").yellow
-    # puts Rainbow((" 2. ") + "Feed Tamas").yellow
-    # puts Rainbow((" 3. ") + "Play With Tamas").yellow
-    # puts Rainbow((" 4. ") + "Adopt Tama").yellow
-    # puts Rainbow((" 5. ") + "Create Tama Egg" ).yellow
-    # puts Rainbow((" 6. ") + "Exit").yellow
-    # puts ""
-    # puts ""
 end
 
+def view_tamas  ### also add table of ALL tamas?
+    a1 = Tama.all.map {|t| t.name}
+    table = TTY::Table.new(find_tamas)
+    puts table.render(:ascii)
+    intro
+end
 
+def find_tamas  ### used to build the ascii table
+    array = [["Name", "Hunger", "Happiness"]]
+    Adoption.all.each do |a|
+        tama_array = []
+        if a.user == $CURRENTUSER
+            tama_array << a.tama.name
+            tama_array << a.tama.fullness
+            tama_array << a.tama.happiness
+            array << tama_array
+        end
+    end
+    array
+end
 
+def feed
+    if $CURRENTUSER.tamas != []
+        Adoption.all.each do |a|
+            if a.user == $CURRENTUSER
+                a.tama.fullness += 1
+                a.tama.save
+            end
+        end
+    end
+    binding.pry
+    Tama.all.each {|t| t.save}
+    intro
+end
+
+def play
+    if $CURRENTUSER.tamas != []
+        Adoption.all.each do |a|
+            if a.user == $CURRENTUSER
+                a.tama.happiness += 1
+                a.tama.save
+            end
+        end
+    end
+    intro
+end
+
+#first time i create a user, their stuff isn't updating in real time
+# next time i run, it runs. or if user waits a minute
+# no asserted MAX for happiness
+####################################
+####################################
+####################################
+####################################
+####################################
 
 def update_tama_timer
     thetime = Time.now.utc
-    count = (thetime - Tama.find(1).background_timer)/60
+    count = (thetime - Tama.find(5).background_timer)/60
 
     Tama.all.each do |t|
         t.background_timer += 60*count.to_i
@@ -158,6 +200,30 @@ def update_tama_timer
         t.save
     end
 end
+
+def create_egg
+    prompt = TTY::Prompt.new(active_color: :cyan)
+    baby_name = prompt.ask("What would you like to name your new baby?", default: "Lil' Tubkins")
+
+    the_baby = Tama.create(name: baby_name)
+    the_baby.background_timer = Time.now.utc
+    the_baby.save
+
+    Adoption.create(user_id: $CURRENTUSER.id, tama_id: the_baby.id)
+
+
+
+    box2 = TTY::Box.warn("Tama-Egg #{baby_name} Hatched!!")
+    print box2
+    intro
+end
+
+
+####################################
+####################################
+####################################
+####################################
+####################################
 
 
 def hunger_check
@@ -170,9 +236,10 @@ def hunger_check
             
             if t.users != []
                 t.fullness -= count.to_i
-                puts "#{t.name} lost #{count} fullness!"  ###just visibly shows one of the tama's fullness
-                puts "vvvvvvvvvvvvvvvvvvvvvvvvvvvvv"
+                puts Rainbow("#{t.name} lost #{count} fullness!")  ###just visibly shows one of the tama's fullness
+                puts Rainbow("vvvvvvvvvvvvvvvvvvvvvvvvvvvvv")
                 puts t.fullness         ###just visibly shows one of the tama's fullness
+                t.save
             end
             update_tama_timer
             t.save
@@ -193,6 +260,7 @@ def happy_check
                 puts "#{t.name} lost #{count} happiness!"  ###just visibly shows one of the tama's fullness
                 puts "vvvvvvvvvvvvvvvvvvvvvvvvvvvvv"
                 puts t.happiness         ###just visibly shows one of the tama's fullness
+                t.save
             end
             update_tama_timer
             t.save
@@ -202,24 +270,31 @@ end
 
 def is_dead
     #checks hunger and happiness
+    Tama.all.each do |t|
+        if t.fullness == 0 || t.happiness == 0
+            t.adoptions.each do |a| 
+                Adoption.delete(a.id)
+            end
+            Tama.delete(t.id)
+
+        end 
+    end
 end
 
-#puts out a list of all the user's eggs, with stats
-# egg will hatch soon....
-#       or egg hatching. .. ... .... ..... .....
-
-
-# forms may have to be handled with another class
-
-# eggs, 
-# forms (egg, baby, child, adult, omega)
+def the_check
+    hunger_check
+    happy_check
+    is_dead
+end
 
 
 
+####################################
+####################################
+####################################
+####################################
+####################################
 
-
-## thetime -> a variable that is always being updated after every break in our program, to
-##              know exactly HOW LONG HAS ELAPSED in comparison to:
 
 
 def test
@@ -232,16 +307,14 @@ def test
         thetime = Time.now.utc
         puts "THE TIME IS ----- #{thetime}"
 
-        puts Tama.find(1).background_timer
-        puts thetime - Tama.find(1).background_timer
+        puts Tama.find(5).background_timer
+        puts thetime - Tama.find(5).background_timer
 
 
-        hunger_check
+        the_check
 
         puts "continue? y or n"
         testinput = gets.chomp.downcase
     break if testinput == "no" || testinput == "n"
     end
-
-    run
 end
