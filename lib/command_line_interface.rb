@@ -156,6 +156,11 @@ def feed
             end
         end
     end
+    puts "><><><><><><><><><><><><>"
+    puts ""
+    puts ""
+    puts ""
+    puts ""
     view_tamas
 end
 
@@ -172,6 +177,11 @@ def play
             end
         end
     end
+    puts "><><><><><><><><><><><><>"
+    puts ""
+    puts ""
+    puts ""
+    puts ""
     view_tamas
 end
 
@@ -193,6 +203,11 @@ def adopt
         puts Rainbow("Oh no! There are no more Tamas to adopt :(").yellow
         puts Rainbow("Create a new egg insead to begin WORLD TAMA-NATIO-..... Look just go away").yellow
     end
+    puts "><><><><><><><><><><><><>"
+    puts ""
+    puts ""
+    puts ""
+    puts ""
     intro
 end
 
@@ -226,6 +241,11 @@ def create_egg
 
     box2 = TTY::Box.warn("Tama-Egg #{baby_name} Hatched!!")
     print box2
+    puts "><><><><><><><><><><><><>"
+    puts ""
+    puts ""
+    puts ""
+    puts ""
     intro
 end
 
