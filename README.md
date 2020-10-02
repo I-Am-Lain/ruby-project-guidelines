@@ -6,10 +6,12 @@ screen on the front for viewing and interacting with your digital friend.
 Originally includes functions for viewing stats, feeding them, playing with them, cleaning them, and putting them to bed. Depending on how they are raised, they could also grow into new forms, or even pass away if neglected!
 
 ## Getting Started
+
 https://github.com/I-Am-Lain/ruby-project-guidelines
 Run "ruby bin/run.rb" from within the project folder to begin playing.
 
-User 
+
+
 1. Upon startup, you are asked for a Username. 
 2. If this Username is matching (case-sensitive) to a previous Username entered, will remember you.
 
@@ -31,16 +33,17 @@ already-created one, or select "Create New Egg" to start en entirely new one!
 		- Create a brand-new Tamagotchi. First prompts for name, default name is "Lil' Bub"
 	6. "Quit"
 		- Quits application.
-    
+
 ---
 ### Gems Required
+
 gem 'artii' - Creates ASCII out of strings
 gem 'rainbow' - Color text
 gem "tty-box" - Create fully adjustable boxes in the CLI
 gem "tty-prompt" - Implements Selector
 gem "tty-table" - Creates ASCII-fied tables
 
-Authors
--------
+### Authors
+
 William Vetter - https://github.com/I-Am-Lain
 Zack Carlson - https://github.com/ZaQuarius15
