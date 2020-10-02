@@ -125,6 +125,16 @@ end
 
 def view_tamas  
     table = TTY::Table.new(find_tamas)
+    beebee = <<-doc
+    .^._.^.
+    | . . |
+   (  ---  )
+   .'     '.
+   |/     \|
+    \ /-\ /
+     V   V
+    doc
+    puts beebee
     puts table.render(:ascii)
     intro
 end
