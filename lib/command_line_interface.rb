@@ -1,12 +1,13 @@
 # TO DO
-# - Create functionality
-#   - refactor the check entirely
-#   - FORMS????
 # - Quotes API
 # - Refactor/Clean up
 # - Add UI/Art
 # - README
 # - 2 min vid
+
+# no asserted MAX for happiness
+# change birthday to age
+# add little ascii pixel art view on top of choice select
 
 # big questions:
 # update for individual tamas?
@@ -80,7 +81,7 @@ end
 
 def intro
     prompt = TTY::Prompt.new(active_color: :cyan)
-    choices = %w(View Feed Tamas Play Adopt Create_Egg Quit)
+    #choices = %w(View Feed Tamas Play Adopt Create_Egg Quit)
     choices = ["View My Tamas", "Feed", "Play", "Adopt-a-tama", "Create New Egg", "Quit"]
     x = prompt.select("Select a choice", choices)
     
@@ -97,7 +98,7 @@ def intro
         when "Play"
             play
         when "Adopt-a-tama"
-            ## create a new many-to-many with an alive Tama
+            adopt
         when "Create New Egg"
             create_egg
         when "Quit"
@@ -131,19 +132,19 @@ def titlebox
 
 
     print box
-    puts Rainbow("CRUDagotchi is the CLI interface").yellow.bright.inverse
-    puts Rainbow("for all fake retro digital pet enthusiasts, worldwide.™").yellow.bright.inverse
+    puts Rainbow("           CRUDagotchi is the CLI interface           ").yellow.bright.inverse
+    puts Rainbow("for all fake retro digital pet enthusiasts, worldwide.").yellow.bright.inverse
 end
 
 ####################################
 ####################################
 ####################################
 ####################################
-####################################
+####################################t
 
 
 def view_tamas  ### also add table of ALL tamas?
-    a1 = Tama.all.map {|t| t.name}
+    #a1 = Tama.all.map {|t| t.name}
     table = TTY::Table.new(find_tamas)
     puts table.render(:ascii)
     intro
@@ -187,7 +188,35 @@ def play
     intro
 end
 
-# no asserted MAX for happiness
+def adopt
+    puts "Thank you for deciding to contribute to Tamagotchi Communism, friend."
+
+
+
+    ###############            REDO ME             #########################################
+    ###############            REDO ME             #########################################
+    ###############            REDO ME             #########################################
+    ###############            REDO ME             #########################################
+                                
+
+    if Tama.all != []
+        prompt = TTY::Prompt.new(active_color: :green)
+        choices = Adoption.all.map do |a| 
+            if a.user_id != $CURRENTUSER.id
+                a.tama.name
+            end
+        end.compact
+        x = prompt.select("Select a choice", choices)
+        y = Tama.find_by(name: x)
+        a = Adoption.create(user_id: $CURRENTUSER.id, tama_id: y.id)
+        a.save
+    else
+        puts "Oh no! All the Tamagotchi's are dead. It's probably your fault. Probably."
+        puts "Create a new egg insead to begin WORLD TAMA-NATIO-..... Look just go away"
+    end
+    intro
+end
+
 ####################################
 ####################################
 ####################################
