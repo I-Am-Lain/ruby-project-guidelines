@@ -1,6 +1,7 @@
 require 'bundler'
 require 'rainbow'
 require "tty-prompt"
+require "rest-client"
 
 Bundler.require
 

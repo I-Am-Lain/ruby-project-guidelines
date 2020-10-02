@@ -11,3 +11,4 @@ gem 'rainbow'
 gem "tty-box"
 gem 'tty-font'
 gem "tty-prompt"
+gem "rest-client"
