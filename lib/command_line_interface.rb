@@ -16,20 +16,8 @@
 require 'pry'
 
 def run
-    #prompt = TTY::Prompt.new
-    #prompt.ask("What is your name?", default: ENV["USER"])
-    #prompt.yes?("Do you like Ruby?")
-
-    #choices = %w(emacs nano vim)
-
-    #prompt.select("Select an editor?", choices)
-
-
     greet
     intro
-
-
-
     test    # <------- CRITICAL!!!!
 end
 
@@ -47,7 +35,7 @@ def greet
     end
     
 
-
+    ### Creates the Title Box
     cute = '❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤❤'
     titlebox
     puts ""
@@ -55,9 +43,8 @@ def greet
 
 
     x = prompt.ask("What is your name?", default: ENV["USER"])
-    #puts Rainbow(prompt.ask("What is your name?", default: ENV["USER"])).yellow.bright.inverse
-    #theinput = gets.chomp
     $CURRENTUSER = User.find_or_create_by(name: x)
+    # MIGHT NEED TO SAY $CURRENTUSER.save
 
     puts ""
     puts "."
@@ -70,6 +57,7 @@ def greet
     else
         puts Rainbow("Welcome back #{$CURRENTUSER.name}, let's get back to keeping your children alive!").yellow.bright.inverse
     end
+
     puts ""
     puts ""
     puts ""
@@ -77,8 +65,6 @@ def greet
     puts ""
     puts ""
 end
-# 1. presents list of options
-# 2. save user selection, evaluate on switch case
 
 
 
@@ -109,7 +95,9 @@ def intro
     #update tama table!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
     the_check
-
+    if $CURRENTUSER.tamas == []
+        puts "WHAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAT"
+    end
 
     case x
         when "View My Tamas"
@@ -164,8 +152,6 @@ def feed
             end
         end
     end
-    binding.pry
-    Tama.all.each {|t| t.save}
     intro
 end
 
@@ -209,7 +195,10 @@ def create_egg
     the_baby.background_timer = Time.now.utc
     the_baby.save
 
-    Adoption.create(user_id: $CURRENTUSER.id, tama_id: the_baby.id)
+    #Adoption.create(user_id: $CURRENTUSER.id, tama_id: the_baby.id)
+
+    $CURRENTUSER.tamas << the_baby
+    $CURRENTUSER.save
 
 
 
