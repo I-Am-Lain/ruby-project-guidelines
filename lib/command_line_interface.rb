@@ -22,6 +22,11 @@ def run
 end
 
 
+####################################
+####################################
+####################################
+####################################
+####################################
 
 
 def greet
@@ -60,30 +65,17 @@ def greet
 
     puts ""
     puts ""
-    puts ""
+    puts ""   
     puts ""
     puts ""
     puts ""
 end
 
-
-
-def titlebox
-    font = TTY::Font.new(:block)
-    pastel = Pastel.new
-
-    box = TTY::Box.frame(("               TAMALAND               "),  # just set the specific space
-    padding: 3, 
-    align: :center, 
-    border: :thick, 
-    style: {fg: :bright_yellow, 
-            bg: :blue,
-            border: {fg: :bright_yellow, bg: :blue}},
-            title: {top_center: "WELCOME TO", bottom_left: "Adopt", bottom_center: "Feed", bottom_right: "Play"})
-    print box
-end
-
-
+####################################
+####################################
+####################################
+####################################
+####################################
 
 
 def intro
@@ -92,12 +84,9 @@ def intro
     choices = ["View My Tamas", "Feed", "Play", "Adopt-a-tama", "Create New Egg", "Quit"]
     x = prompt.select("Select a choice", choices)
     
-    #update tama table!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
     the_check
-    if $CURRENTUSER.tamas == []
-        puts "WHAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAT"
-    end
+
 
     case x
         when "View My Tamas"
@@ -116,11 +105,42 @@ def intro
         else
             "How did you even get here?"
     end
-
-
-    # puts Rainbow("CRUDagotchi is the CLI interface").yellow.bright.inverse
-    # puts Rainbow("for all fake retro digital pet enthusiasts, worldwide.™").yellow.bright.inverse
 end
+
+
+####################################
+####################################
+####################################
+####################################
+####################################
+
+
+def titlebox
+    font = TTY::Font.new(:block)
+    pastel = Pastel.new
+
+
+    box = TTY::Box.frame(("               TAMALAND               "),  # just set the specific space
+    padding: 3, 
+    align: :center, 
+    border: :thick, 
+    style: {fg: :bright_yellow, 
+            bg: :blue,
+            border: {fg: :bright_yellow, bg: :blue}},
+            title: {top_center: "WELCOME TO", bottom_left: "Adopt", bottom_center: "Feed", bottom_right: "Play"})
+
+
+    print box
+    puts Rainbow("CRUDagotchi is the CLI interface").yellow.bright.inverse
+    puts Rainbow("for all fake retro digital pet enthusiasts, worldwide.™").yellow.bright.inverse
+end
+
+####################################
+####################################
+####################################
+####################################
+####################################
+
 
 def view_tamas  ### also add table of ALL tamas?
     a1 = Tama.all.map {|t| t.name}
@@ -167,8 +187,6 @@ def play
     intro
 end
 
-#first time i create a user, their stuff isn't updating in real time
-# next time i run, it runs. or if user waits a minute
 # no asserted MAX for happiness
 ####################################
 ####################################
@@ -258,14 +276,15 @@ def happy_check
 end
 
 def is_dead
-    #checks hunger and happiness
     Tama.all.each do |t|
         if t.fullness == 0 || t.happiness == 0
             t.adoptions.each do |a| 
                 Adoption.delete(a.id)
             end
+            
+            box = TTY::Box.error("#{t.name} died. You monster.")
+            print box
             Tama.delete(t.id)
-
         end 
     end
 end
