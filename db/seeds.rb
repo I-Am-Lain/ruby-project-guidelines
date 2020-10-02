@@ -1,5 +1,5 @@
 will = User.create(name: "Will")
-zach = User.create(name: "Zach")
+zach = User.create(name: "Zack")
 
 tama1 = Tama.create(name: "tama1", family: "the fam family")
 tama2 = Tama.create(name: "tama2", family: "the fam family")
