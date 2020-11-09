@@ -33,6 +33,7 @@ already-created one, or select "Create New Egg" to start en entirely new one!
 		- Create a brand-new Tamagotchi. First prompts for name, default name is "Lil' Bub"
 	6. "Quit"
 		- Quits application.
+5. Your tama babies will lose 1 hunger every 1 minute, and 1 happiness every 2 minutes.
 
 ---
 ### Gems Required
