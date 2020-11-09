@@ -23,7 +23,7 @@ already-created one, or select "Create New Egg" to start en entirely new one!
 	1. "View My Tamas"
 		- Displays all tamas that you currently own. Tamas have a hunger and happy meter, = X/10
 		- If either meter reaches 0, the Tama will pass.
-  2. "Feed"
+        2. "Feed"
 		- Increases all owned Tamas Hunger meter by 1
 	3. "Play"
 		- Increases all owned Tamas Happy meter by 1
